@@ -5,21 +5,16 @@ import { eventNameBlacklistArr } from '../../../utils/blacklist.js';
 const validateEventForm = (vals, projectToEdit) => {
   let newErrors = {};
   Object.keys(vals).forEach((key) => {
+    let blacklistedStrings = isWordInArrayInString( eventNameBlacklistArr, vals[key].toLowerCase() );
     switch (key) {
       case 'name':
         // Required
         if (!vals[key]) {
           newErrors = { ...newErrors, name: 'Event name is required' };
-        } else if (
-          isWordInArrayInString(
-            eventNameBlacklistArr,
-            vals[key].toLowerCase()
-          )
-        ) {
-          const blacklistedString = isWordInArrayInString(eventNameBlacklistArr, vals[key].toLowerCase())
+        } else if (blacklistedStrings) {
           newErrors = {
             ...newErrors,
-            name: `Event name cannot contain: ${blacklistedString.join(', ')}`,
+            name: `Event name cannot contain: ${blacklistedStrings.join(', ')}`,
           };
         } else if (
           isWordInArrayInString(
