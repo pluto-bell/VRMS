@@ -16,9 +16,10 @@ const validateEventForm = (vals, projectToEdit) => {
             vals[key].toLowerCase()
           )
         ) {
+          const blacklistedString = isWordInArrayInString(eventNameBlacklistArr, vals[key].toLowerCase())
           newErrors = {
             ...newErrors,
-            name: `Event name cannot contain: ${vals[key]}`,
+            name: `Event name cannot contain: ${blacklistedString.join(', ')}`,
           };
         } else if (
           isWordInArrayInString(
