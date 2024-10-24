@@ -1,5 +1,6 @@
 import validator from 'validator';
 import { isWordInArrayInString } from './../../../utils/stringUtils.js';
+import { eventNameBlacklistArr } from '../../../utils/blacklist.js';
 
 const validateEventForm = (vals, projectToEdit) => {
   let newErrors = {};
@@ -11,13 +12,13 @@ const validateEventForm = (vals, projectToEdit) => {
           newErrors = { ...newErrors, name: 'Event name is required' };
         } else if (
           isWordInArrayInString(
-            ['meeting', 'mtg'],
+            eventNameBlacklistArr,
             vals[key].toLowerCase()
           )
         ) {
           newErrors = {
             ...newErrors,
-            name: "Event name cannot contain 'meeting' or 'mtg'",
+            name: `Event name cannot contain: ${vals[key]}`,
           };
         } else if (
           isWordInArrayInString(
